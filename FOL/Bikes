@@ -1,0 +1,232 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%Five boys are riding bikes side by side at the park. Each boy has pet and a favorite juice. 
+%Use the logic to find out which one owns a cat.
+
+%differrentFrom(x,y)
+%boy1, boy2, boy3, boy4, boy5
+
+differentFrom(Boy1,Boy2).
+differentFrom(Boy1,Boy3).
+differentFrom(Boy1,Boy4).
+differentFrom(Boy1,Boy5).
+differentFrom(Boy2,Boy3).
+differentFrom(Boy2,Boy4).
+differentFrom(Boy2,Boy5).
+differentFrom(Boy3,Boy4).
+differentFrom(Boy3,Boy5).
+differentFrom(Boy4,Boy5).
+
+differentFrom(x,y) -> differentFrom(y,x).
+
+%rightneighbor(x,y)
+rightneighbor(Boy2,Boy1).
+rightneighbor(Boy3,Boy2).
+rightneighbor(Boy4,Boy3).
+rightneighbor(Boy5,Boy4).
+
+%notFirstrightneighbor
+-rightneighbor(Boy1,Boy1).
+-rightneighbor(Boy2,Boy1).
+-rightneighbor(Boy2,Boy2).
+-rightneighbor(Boy3,Boy1).
+-rightneighbor(Boy3,Boy2).
+-rightneighbor(Boy3,Boy3).
+-rightneighbor(Boy4,Boy1).
+-rightneighbor(Boy4,Boy2).
+-rightneighbor(Boy4,Boy3).
+-rightneighbor(Boy4,Boy4).
+-rightneighbor(Boy4,Boy4).
+-rightneighbor(Boy5,Boy1).
+-rightneighbor(Boy5,Boy2).
+-rightneighbor(Boy5,Boy3).
+-rightneighbor(Boy5,Boy4).
+-rightneighbor(Boy5,Boy5).
+
+%neighbor(x,y)
+neighbor(x,y) <-> rightneighbor(x,y) | rightneighbor(y,x).
+
+%after(x,y), x e undeva in stanga lui y.
+after(Boy1,Boy2).
+after(Boy1,Boy3).
+after(Boy1,Boy4).
+after(Boy1,Boy5).
+after(Boy2,Boy3).
+after(Boy2,Boy4).
+after(Boy2,Boy5).
+after(Boy3,Boy4).
+after(Boy3,Boy5).
+after(Boy4,Boy5).
+
+%notFirstAfter(x,y)
+-after(Boy1,Boy1).
+-after(Boy2,Boy1).
+-after(Boy2,Boy2).
+-after(Boy3,Boy1).
+-after(Boy3,Boy2).
+-after(Boy3,Boy3).
+-after(Boy4,Boy1).
+-after(Boy4,Boy2).
+-after(Boy4,Boy3).
+-after(Boy4,Boy4).
+-after(Boy4,Boy4).
+-after(Boy5,Boy1).
+-after(Boy5,Boy2).
+-after(Boy5,Boy3).
+-after(Boy5,Boy4).
+-after(Boy5,Boy5).
+
+%between(x,y,z)
+between(x,y,z) -> after(x,y) & after(y,z) & after(x,z). %y e in dreapta lui x, y e in stanga lui z si z e in dreapta lui x
+between2(x,y,z) -> rightneighbor(x,y) & rightneighbor(y,z) & after(x,z).
+
+%Names
+Benjamin(x) | Gabriel(x) | Lucas(x) | Matthew(x) | Peter(x).
+
+%Age
+Age7(x) | Age8(x) | Age9(x) | Age10(x) | Age11(x).
+
+%Sign
+Capricorn(x) | Gemini(x) | Leo(x) | Scorpio(x) | Taurus(x).
+
+%Animal
+Bird(x) | Cat(x) | Dog(x) | Fish(x) | Turtle(x).
+
+%Juice
+Apple(x) | Cranberry(x) | Grapefruit(x) | Orange(x) | Pineapple(x).
+
+%Bike
+Black(x) | Blue(x) | Green(x) | Red(x) | White(x).
+
+%boys
+Benjamin(x) & Benjamin(y) -> -differentFrom(x,y).
+Gabriel(x) & Gabriel(y) -> -differentFrom(x,y).
+Lucas(x) & Lucas(y) -> -differentFrom(x,y).
+Matthew(x) & Matthew(y) -> -differentFrom(x,y).
+Peter(x) & Peter(y) -> -differentFrom(x,y).
+
+%age
+Age7(x) & Age7(y) -> -differentFrom(x,y).
+Age8(x) & Age8(y) -> -differentFrom(x,y).
+Age9(x) & Age9(y) -> -differentFrom(x,y).
+Age10(x) & Age10(y) -> -differentFrom(x,y).
+Age11(x) & Age11(y) -> -differentFrom(x,y).
+
+%sign
+Capricorn(x) & Capricorn(y) -> -differentFrom(x,y).
+Gemini(x) & Gemini(y) -> -differentFrom(x,y).
+Leo(x) & Leo(y) -> -differentFrom(x,y).
+Scorpio(x) & Scorpio(y) -> -differentFrom(x,y).
+Taurus(x) & Taurus(y) -> -differentFrom(x,y).
+
+%animals
+Bird(x) & Bird(y) -> -differentFrom(x,y).
+Cat(x) & Cat(y) -> -differentFrom(x,y).
+Dog(x) & Dog(y) -> -differentFrom(x,y).
+Fish(x) & Fish(y) -> -differentFrom(x,y).
+Turtle(x) & Turtle(y) -> -differentFrom(x,y).
+
+%juice
+Apple(x) & Apple(y) -> -differentFrom(x,y).
+Cranberry(x) & Cranberry(y) -> -differentFrom(x,y).
+Grapefruit(x) & Grapefruit(y) -> -differentFrom(x,y).
+Orange(x) & Orange(y) -> -differentFrom(x,y).
+Pineapple(x) & Pineapple(y) -> -differentFrom(x,y).
+
+%colors
+Black(x) & Black(y) -> -differentFrom(x,y).
+Blue(x) & Blue(y) -> -differentFrom(x,y).
+Green(x) & Green(y) -> -differentFrom(x,y).
+Red(x) & Red(y) -> -differentFrom(x,y).
+White(x) & White(y) -> -differentFrom(x,y).
+
+%Clues
+%1.Lucas is somewhere to the right of the boy riding the Red bike
+Lucas(x) & Red(y) -> after(y,x).
+
+%2.Peter has a Fish.
+Peter(x) -> Fish(x).
+
+%3. At the first position is the Dog owner.
+Dog(Boy5).
+
+%4.The boy riding the Green bike is somewhere between
+%the 9 years old boy and the boy riding the White bike,
+%in that order
+Age9(x) & Green(y) & White(z) -> between(x,y,z).
+
+%5.The boy that likes the Grapefruit juice is somewhere
+%to the right of the boy riding the Green bike.
+Grapefruit(x) & Green(y) -> after(y,x).
+
+%6. At the second position is the 10 years old boy.
+Age10(Boy2).
+
+%7. Lucas is next to the boy riding the Blue bike
+Lucas(x) & Blue(y) -> neighbor(x,y).
+
+%8.The oldest boy owns a Bird.
+Age11(x) -> Bird(x).
+
+%9. Matthew was born under the sign of Scorpio.
+Matthew(x) -> Scorpio(x).
+
+%10. At the fifth position is the boy who likes Apple juice.
+Apple(Boy5).
+
+%11. The youngest boy is somewhere between the boy
+%that owns a Dog and the 8 years old boy, in that order
+Dog(x) & Age7(y) & Age8(z) -> between(x,y,z).
+
+%12.At the fifth position is the boy that owns a Reptile.
+Turtle(Boy5).
+
+%13.At one of the ends is the boy riding the Black bike.
+Black(Boy1) | Black(Boy5).
+
+%14. The 11 years old boy is next to the boy who likes Grapefruit juice.
+Age11(x) & Grapefruit(y) -> neighbor(x,y).
+
+%15. At the second position is the boy that likes Orange juice.
+Orange(Boy2).
+
+%16. The Dog's owner is riding the Red bike.
+Dog(x) -> Red(x).
+
+%17. The Leo is next to the boy who likes Pineapple juice.
+Leo(x) & Pineapple(y) -> neighbor(x,y).
+
+%18. The Capricorn is at one of the ends.
+Capricorn(Boy1) | Capricorn(Boy5).
+
+%19. Gabriel is 10 years old.
+Gabriel(x) -> Age10(x).
+
+%20.  Peter is somewhere to the right of the boy riding the Green bike.
+Peter(x) & Green(y) -> after(y,x).
+
+%21. The Taurus is exactly to the left of the boy who likes Pineapple juice.
+Taurus(x) & Pineapple(y) -> rightneighbor(y,x).
+
+%22. The boy riding the Green bike is somewhere between
+%the Gemini and the boy riding the Blue bike, in that order.
+Gemini(x) & Green(y) & Blue(z) -> between(x,y,z).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+

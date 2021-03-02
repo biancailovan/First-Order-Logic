@@ -1,0 +1,122 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%Every anniversary, 4 couples return to the spot they had their first date and order the same meal each had. 
+%As a further token of celebration, each husband brings along a bouquet of flowers that match the ones he originally brought to their first date. 
+%From the clues provided, determine:
+% - the date of the anniversary
+% - the first name of each woman
+% - the drink she ordered 
+% - the type of flower bouquet she was given.
+
+%differrentFrom(x,y)
+%girl1,girl2,girl3,girl4
+
+differentFrom(girl1,girl2).
+differentFrom(girl1,girl3).
+differentFrom(girl1,girl4).
+differentFrom(girl2,girl3).
+differentFrom(girl2,girl4).
+differentFrom(girl3,girl4).
+
+differentFrom(x,y) ->  differentFrom(y,x).
+
+%after(x,y)
+after(girl1,girl2).
+after(girl1,girl3).
+after(girl1,girl4).
+after(girl2,girl3).
+after(girl2,girl4).
+after(girl3,girl4).
+
+%notAfter(x,y)
+-after(girl1,girl1).
+-after(girl2,girl1).
+-after(girl2,girl2).
+-after(girl3,girl1).
+-after(girl3,girl2).
+-after(girl3,girl3).
+-after(girl4,girl1).
+-after(girl4,girl2).
+-after(girl4,girl3).
+-after(girl4,girl4).
+
+%Girls
+April(x) | Bethany(x) | Melissa(x) | Norma(x).
+%Flowers
+Carnations(x) | ForgetMeNot(x) | LeopardsBan(x) | Purslane(x).
+%Drinks
+Champagne(x) | Gin(x) | Rum(x) | Vodka(x).
+%Anniversary
+Jan17(x) | April14(x) | April24(x) | Sept3(x).
+
+%girls
+April(x) & April(y) -> -differentFrom(x,y).
+Bethany(x) & Bethany(y) -> -differentFrom(x,y).
+Melissa(x) & Melissa(y) -> -differentFrom(x,y).
+Norma(x) & Norma(y) -> -differentFrom(x,y).
+
+%flowers
+Carnations(x) & Carnations(y) -> -differentFrom(x,y).
+ForgetMeNot(x) & ForgetMeNot(y) -> -differentFrom(x,y).
+LeopardsBan(x) & LeopardsBan(y) -> -differentFrom(x,y).
+Purslane(x) & Purslane(y) -> -differentFrom(x,y).
+
+%drinks
+Champagne(x) & Champagne(y) -> -differentFrom(x,y).
+Gin(x) & Gin(y) -> -differentFrom(x,y).
+Rum(x) & Rum(y) -> -differentFrom(x,y).
+Vodka(x) & Vodka(y) -> -differentFrom(x,y).
+
+%anniversary
+Jan17(x) & Jan17(y) -> -differentFrom(x,y).
+April14(x) & April14(y) -> -differentFrom(x,y).
+April24(x) & April24(y) -> -differentFrom(x,y).
+Sept3(x) & Sept3(y) -> -differentFrom(x,y).
+
+% Clues.
+
+%1.The 4 people were Norma, the person whose favorite flowers are forget-me-nots, the person whose anniversary is on January 17th, and the one who drinks vodka.
+Norma(x) | ForgetMeNot(x) | Jan17(x) | Vodka(x).
+
+%2.The person whose favorite flowers are Purslanes is not April.
+Purslane(x) -> -April(x).
+
+%3.The person whose anniversary is on April 24th love carnations.
+April24(x) -> Carnations(x).
+
+%4.Either the person whose anniversary is on April 24th or the person whose anniversary is on September 3rd,loves to drink champagne.
+Champagne(x) -> April24(x) | Sept3(x).
+
+%5.Of April and Norma,one has an anniversary on April 24th and the other enjoys drinking gin.   
+April(x) & Norma(y) -> (April24(x) & Gin(y)) | (April24(y) & Gin(x)).
+
+%6.The woman who ordered champagne has an anniversary after Melissa.    
+Champagne(x) & Melissa(y) -> after(y,x).
+
+%7.The person  whose favorite flowers are forget-me-nots is not Bethany. 
+ForgetMeNot(x) -> -Bethany(x).
+
+%8.Bethany has an anniversary after Melissa.
+Bethany(x) & Melissa(y) -> after(y,x).
+
+%9.The woman who received forget-me-nots enjoys drinking rum. 
+ForgetMeNot(x) -> Rum(x).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+

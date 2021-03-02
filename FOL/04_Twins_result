@@ -1,0 +1,16 @@
+interpretation( 2, [number = 1,seconds = 0], [
+    function(John, [0]),
+    function(Vasile, [0]),
+    function(f1(_), [0,0]),
+    function(f2(_), [0,0]),
+    function(f3(_), [0,0]),
+    relation(confident(_), [1,0]),
+    relation(Twins(_,_), [
+        1,0,
+        0,0]),
+    relation(coincidence(_,_), [
+        0,0,
+        0,0]),
+    relation(sameBirthday(_,_), [
+        1,0,
+        0,0])]).

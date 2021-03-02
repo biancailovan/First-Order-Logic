@@ -1,0 +1,216 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%Five women are side by side booking a trip in a travel agency. 
+%Each one is traveling to a different country. 
+%Follow the clues to discover where each one is going.
+
+%differrentFrom(x,y)
+%woman1,woman2,woman3,woman4, woman5
+
+differentFrom(Girl1,Girl2).
+differentFrom(Girl1,Girl3).
+differentFrom(Girl1,Girl4).
+differentFrom(Girl1,Girl5).
+differentFrom(Girl2,Girl3).
+differentFrom(Girl2,Girl4).
+differentFrom(Girl2,Girl5).
+differentFrom(Girl3,Girl4).
+differentFrom(Girl3,Girl5).
+differentFrom(Girl4,Girl5).
+
+differentFrom(x,y) -> differentFrom(y,x).
+
+%leftneighbor(x,y), x e exact in stanga lui y.
+leftneighbor(Girl1,Girl2).
+leftneighbor(Girl2,Girl3).
+leftneighbor(Girl3,Girl4).
+leftneighbor(Girl4,Girl5).
+
+%notFirstLeftNeighbor
+-leftneighbor(Girl1,Girl1).
+-leftneighbor(Girl2,Girl1).
+-leftneighbor(Girl2,Girl2).
+-leftneighbor(Girl3,Girl1).
+-leftneighbor(Girl3,Girl2).
+-leftneighbor(Girl3,Girl3).
+-leftneighbor(Girl4,Girl1).
+-leftneighbor(Girl4,Girl2).
+-leftneighbor(Girl4,Girl3).
+-leftneighbor(Girl4,Girl4).
+-leftneighbor(Girl4,Girl4).
+-leftneighbor(Girl5,Girl1).
+-leftneighbor(Girl5,Girl2).
+-leftneighbor(Girl5,Girl3).
+-leftneighbor(Girl5,Girl4).
+-leftneighbor(Girl5,Girl5).
+
+%after(x,y), x e undeva in stanga lui y.
+after(Girl1,Girl2).
+after(Girl1,Girl3).
+after(Girl1,Girl4).
+after(Girl1,Girl5).
+after(Girl2,Girl3).
+after(Girl2,Girl4).
+after(Girl2,Girl5).
+after(Girl3,Girl4).
+after(Girl3,Girl5).
+after(Girl4,Girl5).
+
+%notFirstAfter(x,y)
+-after(Girl1,Girl1).
+-after(Girl2,Girl1).
+-after(Girl2,Girl2).
+-after(Girl3,Girl1).
+-after(Girl3,Girl2).
+-after(Girl3,Girl3).
+-after(Girl4,Girl1).
+-after(Girl4,Girl2).
+-after(Girl4,Girl3).
+-after(Girl4,Girl4).
+-after(Girl4,Girl4).
+-after(Girl5,Girl1).
+-after(Girl5,Girl2).
+-after(Girl5,Girl3).
+-after(Girl5,Girl4).
+-after(Girl5,Girl5).
+
+%between(x,y,z)
+between(x,y,z) -> after(x,y) & after(y,z) & after(x,z). %y e in dreapta lui x, y e in stanga lui z si z e in dreapta lui x
+between2(x,y,z) -> leftneighbor(x,y) & leftneighbor(y,z) & after(x,z).
+
+%Names
+Ana(x) | Glenda(x) | Jessie(x) | Lara(x) | Rose(x).
+
+%Age
+Age24(x) | Age26(x) | Age28(x) | Age30(x) | Age32(x).
+
+%Profession
+Biologist(x) | Hostess(x) | Judge(x) | Nurse(x) | Singer(x).
+
+%Country
+China(x) | Egipt(x) | Italy(x) | Mexico(x) | Peru(x).
+
+%Duration
+Days5(x) | Days10(x) | Days15(x) | Days20(x) | Days25(x).
+
+%Purse
+Blue(x) | Green(x) | Red(x) | White(x) | Yellow(x).
+
+%women
+Ana(x) & Ana(y) -> -differentFrom(x,y).
+Glenda(x) & Glenda(y) -> -differentFrom(x,y).
+Jessie(x) & Jessie(y) -> -differentFrom(x,y).
+Lara(x) & Lara(y) -> -differentFrom(x,y).
+Rose(x) & Rose(y) -> -differentFrom(x,y).
+
+%age
+Age24(x) & Age24(y) -> -differentFrom(x,y).
+Age26(x) & Age26(y) -> -differentFrom(x,y).
+Age28(x) & Age28(y) -> -differentFrom(x,y).
+Age30(x) & Age30(y) -> -differentFrom(x,y).
+Age32(x) & Age32(y) -> -differentFrom(x,y).
+
+%proffesions
+Biologist(x) & Biologist(y) -> -differentFrom(x,y).
+Hostess(x) & Hostess(y) -> -differentFrom(x,y).
+Judge(x) & Judge(y) -> -differentFrom(x,y).
+Nurse(x) & Nurse(y) -> -differentFrom(x,y).
+Singer(x) & Singer(y) -> -differentFrom(x,y).
+
+%countries
+China(x) & China(y) -> -differentFrom(x,y).
+Egipt(x) & Egipt(y) -> -differentFrom(x,y).
+Italy(x) & Italy(y) -> -differentFrom(x,y).
+Mexico(x) & Mexico(y) -> -differentFrom(x,y).
+Peru(x) & Peru(y) -> -differentFrom(x,y).
+
+%duration
+Days5(x) & Days5(y) -> -differentFrom(x,y).
+Days10(x) & Days10(y) -> -differentFrom(x,y).
+Days15(x) & Days15(y) -> -differentFrom(x,y).
+Days20(x) & Days20(y) -> -differentFrom(x,y).
+Days25(x) & Days25(y) -> -differentFrom(x,y).
+
+Blue(x) & Blue(y) -> -differentFrom(x,y).
+Green(x) & Green(y) -> -differentFrom(x,y).
+Red(x) & Red(y) -> -differentFrom(x,y).
+White(x) & White(y) -> -differentFrom(x,y).
+Yellow(x) & Yellow(y) -> -differentFrom(x,y).
+
+%Clues
+%1. The singer is at the third position.
+Singer(Girl3). 
+
+%2.Woman traveling for 20 days is somewhere between the woman who is going to Peru
+%and the owner of the Blue purse.
+Peru(x) & Days20(y) & Blue(z)-> between(x,y,z).
+
+%3.Ana is exactly to the left of the Biologist.
+Ana(x) & Biologist(y) -> leftneighbor(x,y).
+
+%4.The 32 year-old is going to see the Sahara.
+Age32(x) <-> Egipt(x).
+
+%5.The owner of the white purse is exactly to the right of the woman traveling to Machu Pichu(Peru)
+White(x) & Peru(y) -> leftneighbor(y,x).
+
+%6.Glenda is to the right of the woman who has green purse
+Glenda(x) & Green(y) -> after(y,x).
+
+%7.White purse->between 30 years old woman and the owner of the Blue purse.
+Age30(x) & White(y) & Blue(z) -> between(x,y,z).
+
+%8.The 24 year-old woman is going to visit Aztec pyramid.
+Age24(x)<->Mexico(x).
+
+%9.The woman wearing White purse is somewhere to the left of the yougest woman
+White(x) & Age24(y) -> after(x,y).
+
+%10.The traveler going to Italy is exactly to the right of the woman traveling for 20 days.
+Italy(x) & Days20(y) -> leftneighbor(y,x).
+
+%11.The person who is going to travel for 25 days has the red purse.
+Days25(x) <-> Red(x).
+
+%12. The judge is in the first position.
+Judge(Girl1).
+
+%13.The nurse is exactly to the right of the woman who is going to travel for 20 days.
+Nurse(x) & Days20(y) -> leftneighbor(y,x).
+
+%14.Hostess-between Lara and the woman with blue purse
+Lara(x) & Hostess(y) & Blue(z) -> between(x,y,z).
+
+%15.In the second position is the woman that is going to travel for 15 days
+Days15(Girl2).
+
+%16. Rose has the green purse
+Rose(x) <-> Green(x).
+
+%17. Less than a week, to the left of the 32 year-old woman
+Days5(x) & Age32(y) -> leftneighbor(x,y).
+
+%18. The person traveling for 5 days is 28.
+Days5(x)<->Age28(x).
+
+%19.Blue purse owner-between 30 year old woman and the owner of yellow purse
+Age30(x) & Blue(y) & Yellow(z) -> between(x,y,z).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+

@@ -1,0 +1,140 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%Five students in Mrs. Hill's class each became ill on a certain day of the week and had to stay at home for a number of days.
+%While the children were home sick, their mothers made them each their favorite soup for lunch each day while they watched cartoons.
+%From the clues provided, determine which child came down with which illness, which soup they were served and on which day he or she did not go to school.
+
+%differentFrom(x,y)
+%child1,child2,child3,child4,child5
+differentFrom(child1,child2).
+differentFrom(child1,child3).
+differentFrom(child1,child4).
+differentFrom(child1,child5).
+differentFrom(child2,child3).
+differentFrom(child2,child4).
+differentFrom(child2,child5).
+differentFrom(child3,child4).
+differentFrom(child3,child5).
+differentFrom(child4,child5).
+
+differentFrom(x,y) -> differentFrom(y,x).
+
+before(child1,child2).
+before(child1,child3).
+before(child1,child4).
+before(child1,child5).
+before(child2,child3).
+before(child2,child4).
+before(child2,child5).
+before(child3,child4).
+before(child3,child5).
+before(child4,child5).
+
+-before(child1,child1).
+-before(child2,child1).
+-before(child2,child2).
+-before(child3,child1).
+-before(child3,child2).
+-before(child3,child3).
+-before(child4,child1).
+-before(child4,child2).
+-before(child4,child3).
+-before(child4,child4).
+-before(child5,child1).
+-before(child5,child2).
+-before(child5,child3).
+-before(child5,child4).
+-before(child5,child5).
+
+Alex(x) | Betty(x) | Jacob(x) | Molly(x) | Nancy(x).
+Monday(x) | Tuesday(x) | Wednesday(x) | Thursday(x) | Friday(x).
+ChickenPox(x) | Cold(x) | Fever(x) | Flu(x) | Migraine(x).
+BeanAndBacon(x) | BeefAndBarley(x) | ChickenNoodle(x) | Minestrone(x) | Tomato(x).
+
+Alex(x) & Alex(y) -> -differentFrom(x,y).
+Betty(x) & Betty(y) -> -differentFrom(x,y).
+Jacob(x) & Jacob(y) -> -differentFrom(x,y).
+Molly(x) & Molly(y) -> -differentFrom(x,y).
+Nancy(x) & Nancy(y) -> -differentFrom(x,y).
+
+Monday(x) & Monday(y) -> -differentFrom(x,y).
+Tuesday(x) & Tuesday(y) -> -differentFrom(x,y).
+Wednesday(x) & Wednesday(y) -> -differentFrom(x,y).
+Thursday(x) & Thursday(y) -> -differentFrom(x,y).
+Friday(x) & Friday(y) -> -differentFrom(x,y).
+
+ChickenPox(x) & ChickenPox(y) -> -differentFrom(x,y).
+Cold(x) & Cold(y) -> -differentFrom(x,y).
+Fever(x) & Fever(y) -> -differentFrom(x,y).
+Flu(x) & Flu(y) -> -differentFrom(x,y).
+Migraine(x) & Migraine(y) -> -differentFrom(x,y).
+
+BeanAndBacon(x) & BeanAndBacon(y) -> -differentFrom(x,y).
+BeefAndBarley(x) & BeefAndBarley(y) -> -differentFrom(x,y).
+ChickenNoodle(x) & ChickenNoodle(y) -> -differentFrom(x,y).
+Minestrone(x) & Minestrone(y) -> -differentFrom(x,y).
+Tomato(x) & Tomato(y) -> -differentFrom(x,y).
+
+%Clues
+%1.The person who had the fever is not Molly.
+Fever(x) -> -Molly(x).
+
+%2.Nancy did not have fever.
+Nancy(x) -> -Fever(x).
+
+%3.The person who had chicken pox left school sometime before Alex
+Monday(x) & Tuesday(y) -> before(x,y).
+Monday(x) & Wednesday(y) -> before(x,y).
+Monday(x) & Thursday(y) -> before(x,y).
+Monday(x) & Friday(y) -> before(x,y).
+Tuesday(x) & Wednesday(y) -> before(x,y).
+Tuesday(x) & Thursday(y) -> before(x,y).
+Tuesday(x) & Friday(y) -> before(x,y).
+Wednesday(x) & Thursday(y) -> before(x,y).
+Wednesday(x) & Friday(y) -> before(x,y).
+Thursday(x) & Friday(y) -> before(x,y).
+
+ChickenPox(x) & Alex(y) -> before(x,y).
+
+%4.The child who did not return to school on Monday did not have migraine.
+Monday(x) -> -Migraine(x).
+
+%5.Jacob was unfortunate to come down with a nasty case of the flu.
+Jacob(x) -> Flu(x).
+
+%6.The five students are Molly, the person who had a migraine, the student who has served beef and barley soup,the person who left school on Thursday and Alex.   
+Molly(x) | Migraine(x) | BeefAndBarley(x) | Thursday(x) | Alex(x). 
+
+%7.The child who first missed school on Thursday wasn't served minestrone soup.
+Thursday(x) -> -Minestrone(x).
+
+%8.The child who had the fever was not Alex.
+Fever(x) -> -Alex(x).
+
+%9.Molly was given a streaming bowl of chicken noodle soup for lunch.
+Molly(x) -> ChickenNoodle(x).
+
+%10.The student who had the beef and barley soup left the day after the child whose mother fed them tomato soup.
+BeefAndBarley(x) & Tomato(y) -> before(y,x).
+
+%11.The student that did not show up for class on Thursday didn't have the flu. 
+Thursday(x) -> -Flu(x).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+
